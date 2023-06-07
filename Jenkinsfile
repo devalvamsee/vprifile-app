@@ -21,8 +21,8 @@ pipeline {
     stage('Deploy') {
         steps {
             sshagent(credentials: ['ubuntu']) {
-                sh "scp target/vprofile.jar ubuntu@3.110.159.232:~/"
-                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile.war /var/lib/tomcat9/webapps/'"
+                sh "sh "scp target/vprofile-v1.war ubuntu@3.110.159.232:~/"
+                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
                 sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
             }
         }
