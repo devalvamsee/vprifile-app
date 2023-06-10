@@ -18,11 +18,18 @@ pipeline {
             }
         }
         }
+        stage("Upload Artifacr s3") {
+        steps {
+            script {
+                 sh 'aws s3 vprofile-v1.war s3://automatio999/vprofile-artifacts/vprofile-v1.war'
+            }
+        }
+        }
     stage('Deploy') {
         steps {
             sshagent(credentials: ['ubuntu']) {
-                sh "sc target/vprofile.war ubuntu@3.110.159.232:~/"
-                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile.war /var/lib/tomcat9/webapps/'"
+                sh "scp target/vprofile-v1.war ubuntu@3.110.159.232:~/"
+                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
                 sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
             }
         }
