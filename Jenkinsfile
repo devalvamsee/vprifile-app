@@ -21,7 +21,7 @@ pipeline {
         stage("Upload Artifacr s3") {
         steps {
             script {
-                 sh 'aws s3 cp vprofile-v1.war s3://automatio999/vprofile-artifacts/vprofile-v1.war'
+                 sh 'aws s3 cp target/vprofile-v1.war s3://automatio999/vprofile-artifacts/vprofile-v1.war'
             }
         }
         }
