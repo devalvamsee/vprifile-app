@@ -18,6 +18,13 @@ pipeline {
             }
         }
         }
+        stage("Upload Artifacr s3") {
+        steps {
+            script {
+                 sh 'aws s3 vprofile-v1.war s3://automatio999/vprofile-artifacts/vprofile-v1.war'
+            }
+        }
+        }
     stage('Deploy') {
         steps {
             sshagent(credentials: ['ubuntu']) {
