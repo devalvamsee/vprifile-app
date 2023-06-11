@@ -4,6 +4,15 @@ pipeline {
         maven 'maven3'
     }
     stages {
+        stage('Read POM') {
+            steps {
+                script {
+                    def pom = readMavenPom file: 'pom.xml'
+                    def version = pom.version
+                    echo "Project version is: ${version}"
+                }
+            }
+        }
         stage("Build Artifact") {
         steps {
             script {
@@ -18,10 +27,10 @@ pipeline {
             }
         }
         }
-        stage("Upload Artifacr s3") {
+        stage("Upload Artifact s3") {
         steps {
             script {
-                 sh 'aws s3 cp target/vprofile-v1.war s3://automatio999/vprofile-artifacts/vprofile-v1.war'
+                 sh 'aws s3 cp target/vprofile-1.0.4.war s3://automatio999/vprofile-artifacts/vprofile-v1.war'
             }
         }
         }
