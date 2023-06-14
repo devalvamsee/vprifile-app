@@ -3,6 +3,9 @@ pipeline {
     tools {
         maven 'maven3'
     }
+    parameters {
+        choice(name: 'DEPLOY_TO', choices: ['dev', 'qa', 'prod'], description: 'Where to deploy?')
+    }
     environment {
         version = ''
     }
@@ -37,14 +40,38 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-        steps {
-            sshagent(credentials: ['ubuntu']) {
-                
-                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
-                sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
+        stage('Deploy-qa') {
+            when {
+                expression { params.DEPLOY_TO == 'dev' }
+            }
+            steps {
+                sshagent(credentials: ['ubuntu']) {
+                    sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
+                    sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
+                }
             }
         }
-    }
+        stage('Deploy-stage') {
+            when {
+                expression { params.DEPLOY_TO == 'qa' }
+            }
+            steps {
+                sshagent(credentials: ['ubuntu']) {
+                    sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
+                    sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
+                }
+            }
+        }
+        stage('Deploy-prod') {
+            when {
+                expression { params.DEPLOY_TO == 'prod' }
+            }
+            steps {
+                sshagent(credentials: ['ubuntu']) {
+                    sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
+                    sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
+                }
+            }
+        }
     }
 }
