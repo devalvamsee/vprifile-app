@@ -14,9 +14,9 @@ pipeline {
             steps {
                 script {
                     if (params.DEPLOY_TO == 'dev') {
-                        checkout([$class: 'GitSCM', branches: [[name: 'develop']], userRemoteConfigs: [[url: 'git@github.com:YourGithubUsername/YourRepo.git']]])
+                        checkout([$class: 'GitSCM', branches: [[name: 'develop']], userRemoteConfigs: [[url: 'git@github.com:ravithejajs/vprifile-app.git']]])
                     } else {
-                        checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'git@github.com:YourGithubUsername/YourRepo.git']]])
+                        checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'git@github.com:ravithejajs/vprifile-app.git']]])
                     }
                 }
             }
