@@ -10,6 +10,17 @@ pipeline {
         version = ''
     }
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    if (params.DEPLOY_TO == 'dev') {
+                        checkout([$class: 'GitSCM', branches: [[name: 'develop']], userRemoteConfigs: [[url: 'git@github.com:YourGithubUsername/YourRepo.git']]])
+                    } else {
+                        checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'git@github.com:YourGithubUsername/YourRepo.git']]])
+                    }
+                }
+            }
+        }
         stage('Read POM') {
             steps {
                 script {
