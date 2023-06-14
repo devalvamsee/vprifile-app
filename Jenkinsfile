@@ -13,12 +13,10 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    if (params.DEPLOY_TO == 'dev') {
-                       sh 'git checkout dev'
-                       sh 'git pull'
+                      if (params.DEPLOY_TO == 'dev') {
+                        checkout([$class: 'GitSCM', branches: [[name: 'develop']], userRemoteConfigs: [[url: 'git@github.com:ravithejajs/vprifile-app.git', credentialsId: 'github-creds']]])
                     } else {
-                       sh 'git checkout master'
-                       sh 'git pull'
+                        checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'git@github.com:ravithejajs/vprifile-app.git', credentialsId: 'github-creds']]])
                     }
                 }
             }
