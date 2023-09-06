@@ -33,15 +33,15 @@ pipeline {
         stage("Upload Artifact s3") {
             steps {
                 script {
-                    sh "aws s3 cp target/vprofile-${version}.war s3://automatio999/vprofile-artifacts/vprofile-${version}.war"
+                    sh "aws s3 cp vprofile-1.0.3.war s3://vamsi2000/vprofile-artifact/vprofile-1.0.3.war"
                 }
             }
         }
         stage('Deploy') {
         steps {
-            sshagent(credentials: ['github-cred']) {
-                
-                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-v1.war /var/lib/tomcat9/webapps/'"
+            sshagent(credentials: ['ubuntu']) {
+                sh "scp target/vprofile-1.0.3.war ubuntu@3.110.159.232:~/"
+                sh "ssh ubuntu@3.110.159.232 'sudo mv ~/vprofile-1.0.3.war /var/lib/tomcat9/webapps/'"
                 sh "ssh ubuntu@3.110.159.232 'sudo systemctl restart tomcat9'"
             }
         }
